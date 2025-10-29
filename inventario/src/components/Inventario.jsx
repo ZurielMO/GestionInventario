@@ -5,8 +5,7 @@ import Login from './Login'
 const Inventario = () => {
   return (
     <>
-    <Compras/>
-    <Login/>
+      <h1>Inventario</h1>
     </>
   )
 }
