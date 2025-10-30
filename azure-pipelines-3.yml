@@ -1,37 +1,35 @@
 trigger:
-  - main  
+  - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  # Descargar código del repositorio
-  - task: Checkout@1
-    displayName: 'Descargar código fuente'
+  # 1. Descargar código del repositorio
+  - checkout: self
 
-  # Instalar Node.js
-  - task: UseNode@1
+  # 2. Instalar Node.js
+  - task: NodeTool@0
     inputs:
       versionSpec: '20.x'
     displayName: 'Instalar Node.js 20'
 
-  #  Instalar dependencias
+  # 3. Instalar dependencias
   - script: npm install
     displayName: 'Instalar dependencias del proyecto'
 
-  #  Ejecutar pruebas automáticas (Vitest)
+  # 4. Ejecutar pruebas automáticas (Vitest)
   - script: npm run test:run
     displayName: 'Ejecutar pruebas unitarias (Vitest)'
 
-  #  Compilar la app (Vite)
+  # 5. Compilar la app (Vite)
   - script: npm run build
     displayName: 'Compilar aplicación (Vite Build)'
 
-  #  Publicar artefactos generados
+  # 6. Publicar artefactos generados
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: 'dist'
       ArtifactName: 'build'
       publishLocation: 'Container'
     displayName: 'Publicar artefacto (build de Vite)'
-
