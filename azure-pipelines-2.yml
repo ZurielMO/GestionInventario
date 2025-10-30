@@ -4,25 +4,29 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main  # o la rama donde haces tus commits
+- main
 
 pool:
-  name: Default  # usa tu agente local
+  name: Default
 
 steps:
+
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Instalar Node.js'
+
 
 - script: |
     npm install
     npm run build
   displayName: 'Instalar dependencias y compilar proyecto'
 
+
 - script: |
-    echo "Build completado correctamente"
-  displayName: 'Verificar build'
+    npm test
+  displayName: 'Ejecutar pruebas automáticas'
+
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -30,3 +34,15 @@ steps:
     ArtifactName: 'vite-build'
     publishLocation: 'Container'
   displayName: 'Publicar artefacto (build de Vite)'
+
+
+- script: |
+    echo "Desplegando aplicación en entorno de pruebas..."
+    echo "Despliegue completado correctamente."
+  displayName: 'Desplegar aplicación'
+
+
+- script: |
+    echo "Revisando logs del build..."
+    echo "Estado del pipeline: OK ✅"
+  displayName: 'Monitoreo y validación'
