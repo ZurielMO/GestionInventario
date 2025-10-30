@@ -1,0 +1,52 @@
+# ============================================
+# Pipeline CI/CD - Historia de Usuario 2
+# Proyecto: Gestión de Inventario (React + Node.js)
+# Funcionalidad: Eliminación lógica y reactivación de productos
+# ============================================
+
+trigger:
+  - main  # Se ejecuta cuando haces push a la rama principal
+
+pool:
+  name: Default  # Usa tu agente local registrado
+
+steps:
+# 1. Descargar código del repositorio
+- checkout: self
+  displayName: 'Descargar código fuente'
+
+# 2. Instalar Node.js
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Instalar Node.js 20'
+
+# 3. Instalar dependencias del proyecto
+- script: |
+    npm ci
+  displayName: 'Instalar dependencias del proyecto'
+
+#  4. Ejecutar pruebas (simulando eliminación y reactivación)
+- script: |
+    echo "Ejecutando pruebas de eliminación lógica y reactivación..."
+    npm test --if-present
+  displayName: 'Ejecutar pruebas automatizadas'
+
+# 5. Analizar el código (buenas prácticas / lint)
+- script: |
+    echo "Analizando calidad del código..."
+    npm run lint --if-present
+  displayName: 'Analizar calidad del código'
+
+# 6. Compilar la aplicación React
+- script: |
+    npm run build
+  displayName: 'Compilar aplicación (build React/Vite)'
+
+#  7. Publicar artefactos del build (dist)
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/dist'
+    ArtifactName: 'react-build'
+    publishLocation: 'Container'
+  displayName: 'Publicar artefacto compilado (dist)'
