@@ -90,7 +90,7 @@ const Productos = () => {
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl">
       <h1 className="text-2xl font-bold mb-6 text-center text-indigo-700">
-        Gestión de Productos
+        Administracion de Productos
       </h1>
 
       {/* Formulario */}
@@ -157,8 +157,12 @@ const Productos = () => {
               className="flex flex-col sm:flex-row justify-between items-center border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition"
             >
               <div>
-                <p className="font-semibold text-lg text-gray-800">{p.nombre}</p>
-                <p className="text-sm text-gray-600">Proveedor: {p.proveedor}</p>
+                <p className="font-semibold text-lg text-gray-800">
+                  {p.nombre}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Proveedor: {p.proveedor}
+                </p>
                 <p className="text-sm text-gray-600">
                   Presentación: {p.presentacion}
                 </p>

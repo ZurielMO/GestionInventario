@@ -1,7 +1,7 @@
 import React from "react";
 
 const Salidas = () => {
-  return <div>Salidas de inventario</div>;
+  return <div>Salidas del inventario de productos</div>;
 };
 
 export default Salidas;
