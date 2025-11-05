@@ -114,13 +114,6 @@ const Compras = () => {
     });
   };
 
-  const handleEliminarPedido = (id) => {
-    if (window.confirm("¿Deseas eliminar este pedido?")) {
-      const filtrados = pedidos.filter((p) => p.id !== id);
-      setPedidos(filtrados);
-    }
-  };
-
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl">
       <h1 className="text-2xl font-bold mb-6 text-center text-indigo-700">
@@ -217,12 +210,6 @@ const Compras = () => {
                 </p>
                 <p className="text-xs text-gray-500">Fecha: {p.fecha}</p>
               </div>
-              <button
-                onClick={() => handleEliminarPedido(p.id)}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg mt-3 sm:mt-0 transition"
-              >
-                Eliminar
-              </button>
             </div>
           ))}
         </div>
