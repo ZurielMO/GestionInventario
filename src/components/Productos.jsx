@@ -90,7 +90,7 @@ const Productos = () => {
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl">
       <h1 className="text-2xl font-bold mb-6 text-center text-indigo-700">
-        Modulo de Productos
+        Gestión de Productos
       </h1>
 
       {/* Formulario */}
