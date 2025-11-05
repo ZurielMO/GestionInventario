@@ -1,0 +1,60 @@
+# =====================================
+# Pipeline CI/CD - Gestión de Inventario
+# Historia de usuario: US002
+# Funcionalidad: Compras con proveedores y actualización de stock
+# Autores: Alejandro Cid Castellanos Varela / Viviana Miranda Ramírez
+# Mantenido por: Zuriel Mora
+# =====================================
+
+trigger:
+  - main  # Se ejecuta automáticamente cuando se hace push a main
+
+pool:
+  name: Default 
+
+steps:
+  # 1. Descargar código fuente desde GitHub
+  - checkout: self
+    displayName: 'Descargar código fuente del repositorio GestiónInventario'
+
+  # 2. Instalar Node.js versión 20
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Instalar Node.js 20.x'
+
+  # 3. Instalar dependencias
+  - script: |
+      npm ci
+    displayName: 'Instalar dependencias con npm ci'
+
+  # 4. Linter (ESLint)
+  - script: |
+      npm run lint || echo "Advertencias de ESLint detectadas"
+    displayName: 'Ejecutar revisión de código con ESLint'
+    continueOnError: true  # No detiene el pipeline si hay warnings
+
+  # 5. Ejecutar pruebas unitarias (Vitest)
+  - script: |
+      npm run test:run
+    displayName: 'Ejecutar pruebas unitarias (Vitest)'
+    continueOnError: false  # Si fallan las pruebas el pipeline se detiene
+
+  # 6. Compilar la aplicación con Vite
+  - script: |
+      npm run build
+    displayName: 'Compilar aplicación con Vite (Build Producción)'
+
+  # 7. Generar reporte de cobertura (Vitest)
+  - script: |
+      npm run test:coverage || echo "No se generó reporte de cobertura"
+    displayName: 'Generar reporte de cobertura de pruebas'
+    continueOnError: true
+
+  # 8. Publicar artefacto de build (dist)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/dist'
+      ArtifactName: 'build-us002'
+      publishLocation: 'Container'
+    displayName: 'Publicar artefacto de build (módulo US002)'
