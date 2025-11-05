@@ -77,11 +77,11 @@ const Compras = () => {
       fecha: new Date().toLocaleString(),
     };
 
-    // --- 1️⃣ Guardar en lista de pedidos ---
+    // Guardar en lista de pedidos
     const nuevosPedidos = [...pedidos, nuevaCompra];
     setPedidos(nuevosPedidos);
 
-    // --- 2️⃣ Actualizar inventario ---
+    // Actualizar inventario
     const existente = inventario.find((i) => i.id === productoBase.id);
     if (existente) {
       const actualizado = inventario.map((i) =>
@@ -120,7 +120,6 @@ const Compras = () => {
         Registro de Compras
       </h1>
 
-      {/* Formulario */}
       <form
         onSubmit={handleCompra}
         className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8"
