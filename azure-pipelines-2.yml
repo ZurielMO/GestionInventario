@@ -3,30 +3,34 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
+# Pipeline CI/CD para React (Vite)
 trigger:
-- main  # o la rama donde haces tus commits
+- main  # o la rama principal que uses
 
 pool:
-  name: Default  # usa tu agente local
+  name: Default  # tu agente local o el de Azure
 
 steps:
+# 1. Instalar Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Instalar Node.js'
 
+# 2. Instalar dependencias
 - script: |
-    npm install
+    npm ci
+  displayName: 'Instalar dependencias'
+
+# 3. Compilar el proyecto (build)
+- script: |
     npm run build
-  displayName: 'Instalar dependencias y compilar proyecto'
+  displayName: 'Compilar aplicación React con Vite'
 
-- script: |
-    echo "Build completado correctamente"
-  displayName: 'Verificar build'
-
+# 4. Publicar artefacto (carpeta dist)
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'dist'
-    ArtifactName: 'vite-build'
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/dist'
+    ArtifactName: 'react-build'
     publishLocation: 'Container'
-  displayName: 'Publicar artefacto (build de Vite)'
+  displayName: 'Publicar artefacto de build (dist)'

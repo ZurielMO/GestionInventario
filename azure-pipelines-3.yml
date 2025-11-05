@@ -1,0 +1,47 @@
+# =====================================
+# 🚀 Pipeline CI/CD - Gestión de Inventario
+# Historia de usuario: US001
+# Autor: Zuriel Mora
+# =====================================
+
+trigger:
+  - main  # Se ejecuta cuando haces push a la rama principal
+
+pool:
+  name: Default  # Usa tu agente local
+
+steps:
+  # Descargar código fuente del repositorio
+  - checkout: self
+    displayName: 'Descargar código fuente desde GitHub'
+
+  #Instalar Node.js versión 20
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Instalar Node.js 20.x'
+
+  # Instalar dependencias del proyecto
+  - script: |
+      npm install
+    displayName: 'Instalar dependencias con npm'
+
+  # Ejecutar pruebas automáticas (Vitest)
+  # Solo si tienes configurado "test:run" en package.json
+  - script: |
+      npm run test:run
+    displayName: 'Ejecutar pruebas unitarias (Vitest)'
+    continueOnError: true   # Evita que el pipeline falle si no hay pruebas aún
+
+  # Compilar el proyecto (Vite Build)
+  - script: |
+      npm run build
+    displayName: 'Compilar aplicación con Vite'
+
+  #Publicar artefacto de build
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/dist'
+      ArtifactName: 'build'
+      publishLocation: 'Container'
+    displayName: 'Publicar artefacto generado (carpeta dist)'

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Salidas = () => {
-  return (
-    <div>Salidas</div>
-  )
-}
+  return <div>Salidas del inventario de productos</div>;
+};
 
-export default Salidas
+export default Salidas;
